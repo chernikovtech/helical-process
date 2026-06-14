@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Helical Staircase Rescue — A CAworks Engineering Case Study</title>
+<meta name="description" content="How CAworks took an unsafe, contractor-built helical steel staircase — propped on temporary scaffolding — and delivered it as a structurally verified, Dubai Building Code-compliant and architecturally finished centrepiece. Inspection, engineering, 3D survey, FEA, code compliance and fabrication.">
+<meta property="og:title" content="Helical Staircase Rescue — CAworks Engineering Case Study">
+<meta property="og:description" content="From a propped, vibrating structure to a code-compliant, beautifully finished staircase — the full CAworks process.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://res.cloudinary.com/dc99897dw/image/upload/w_1200,q_auto,f_auto/caworks/helical-pitch/workshop-sparks-hero">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="https://res.cloudinary.com/dc99897dw/image/upload/w_64,q_auto,f_png/caworks/process-microsite/site/caworks-logo">
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+} }
+</script>
+<style>
+:root{
+  --bg:#0A0A0A; --bg2:#121212; --bg3:#1A1A1A; --surface:#1f1f1f; --line:#2a2a28;
+  --text:#F5F5F0; --muted:#9A9A94; --gold:#c9a96e; --gold-l:#E5D5A3; --gold-d:#8B7347;
+  --maxw:1200px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:'Outfit',system-ui,sans-serif;font-weight:300;line-height:1.65;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.skip{position:absolute;left:-999px;top:0;background:var(--gold);color:#000;padding:10px 16px;z-index:200}
+.skip:focus{left:8px;top:8px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+.eyebrow{font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:0 0 18px}
+.divider{width:48px;height:2px;background:var(--gold);margin:22px 0 28px;border:0}
+h1,h2,h3,h4{font-weight:300;letter-spacing:-.02em;line-height:1.08;margin:0}
+h2{font-size:clamp(2rem,4.4vw,3.2rem);margin-bottom:6px}
+h3{font-size:clamp(1.4rem,2.4vw,1.9rem)}
+h4{font-size:1.06rem;font-weight:600;letter-spacing:0}
+p{margin:0 0 1.1em;color:#cfcfca}
+.lead{font-size:clamp(1.05rem,1.7vw,1.32rem);color:#e7e7e2;font-weight:300}
+strong{color:var(--text);font-weight:600}
+section{padding:clamp(64px,8vw,120px) 0;border-top:1px solid var(--line)}
+.kicker{color:var(--muted)}
+
+/* nav */
+header.nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.82);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{font-weight:600;letter-spacing:.04em;font-size:1.15rem}
+.brand b{color:var(--gold)}
+.nav nav{display:flex;gap:26px;font-size:.83rem;letter-spacing:.04em}
+.nav nav a{color:var(--muted);transition:color .2s}
+.nav nav a:hover{color:var(--gold)}
+.nav .tag{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);
+  border:1px solid var(--gold-d);padding:5px 11px}
+@media(max-width:820px){.nav nav{display:none}}
+
+/* hero */
+.hero{position:relative;min-height:92vh;display:flex;align-items:flex-end;
+  border-top:0;overflow:hidden}
+.hero .bg{position:absolute;inset:0;background-size:cover;background-position:center;
+  filter:grayscale(.15) contrast(1.05)}
+.hero .scrim{position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(10,10,10,.55) 0%,rgba(10,10,10,.25) 40%,rgba(10,10,10,.92) 100%)}
+.hero .wrap{position:relative;padding-bottom:clamp(48px,7vw,96px);padding-top:120px}
+.hero h1{font-size:clamp(2.6rem,7vw,5.6rem);max-width:16ch}
+.hero .lead{max-width:60ch;margin-top:26px}
+.statbar{display:flex;flex-wrap:wrap;gap:38px;margin-top:44px;padding-top:30px;border-top:1px solid rgba(201,169,110,.3)}
+.stat .n{font-size:clamp(1.6rem,3vw,2.4rem);color:var(--gold-l);font-weight:300;letter-spacing:-.02em}
+.stat .l{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+/* two-col */
+.cols{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(30px,5vw,72px);align-items:center}
+.cols.rev{grid-template-columns:.95fr 1.05fr}
+@media(max-width:860px){.cols,.cols.rev{grid-template-columns:1fr;gap:34px}}
+figure{margin:0}
+figure img{width:100%;border:1px solid var(--line)}
+figcaption{font-size:.8rem;color:var(--muted);margin-top:10px;letter-spacing:.02em}
+.frame{border:1px solid var(--line);background:var(--bg2)}
+
+/* risk pill */
+.riskpill{display:inline-flex;align-items:center;gap:10px;border:1px solid #6b2b2b;
+  background:rgba(120,30,30,.16);color:#e9b4b4;padding:8px 16px;font-size:.78rem;
+  letter-spacing:.12em;text-transform:uppercase;font-weight:600}
+.riskpill .dot{width:8px;height:8px;background:#d65a5a;border-radius:50%}
+
+/* phase timeline */
+.phases{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.phase{background:var(--bg2);padding:22px 18px}
+.phase .pn{font-size:.72rem;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;font-weight:600}
+.phase h4{margin:10px 0 8px;font-size:1.02rem}
+.phase p{font-size:.83rem;color:var(--muted);margin:0}
+@media(max-width:900px){.phases{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.phases{grid-template-columns:1fr}}
+
+/* step header chips */
+.stepno{display:inline-block;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold);font-weight:600;margin-bottom:14px}
+
+/* galleries */
+.grid{display:grid;gap:14px}
+.g-2{grid-template-columns:repeat(2,1fr)}
+.g-3{grid-template-columns:repeat(3,1fr)}
+.g-4{grid-template-columns:repeat(4,1fr)}
+.g-5{grid-template-columns:repeat(5,1fr)}
+.g-6{grid-template-columns:repeat(6,1fr)}
+@media(max-width:900px){.g-4,.g-5,.g-6{grid-template-columns:repeat(3,1fr)}.g-3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.g-2,.g-3,.g-4,.g-5,.g-6{grid-template-columns:repeat(2,1fr)}}
+.thumb{position:relative;padding:0;border:1px solid var(--line);background:var(--bg3);
+  cursor:pointer;overflow:hidden;display:block}
+.thumb img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease,opacity .3s}
+.thumb:hover img{transform:scale(1.05);opacity:.92}
+.thumb:focus-visible{outline:2px solid var(--gold)}
+.thumb-cap{position:absolute;left:0;right:0;bottom:0;padding:14px 12px 9px;font-size:.72rem;
+  color:#eee;background:linear-gradient(0deg,rgba(0,0,0,.85),transparent);
+  opacity:0;transition:opacity .25s;text-align:left;letter-spacing:.02em}
+.thumb:hover .thumb-cap{opacity:1}
+
+/* option cards */
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:900px){.opts{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.opts{grid-template-columns:1fr}}
+.opt-card{border:1px solid var(--line);background:var(--bg2);padding:0 0 18px}
+.opt-card .thumb{border:0;border-bottom:1px solid var(--line)}
+.opt-card h4{padding:18px 18px 0;font-size:1rem}
+.opt-card p{padding:8px 18px 0;font-size:.86rem;color:var(--muted);margin:0}
+.chosen{margin-top:22px;border-left:3px solid var(--gold);background:rgba(201,169,110,.07);
+  padding:18px 22px}
+.chosen b{color:var(--gold-l)}
+
+/* scope table */
+.scope{width:100%;border-collapse:collapse;font-size:.92rem}
+.scope th,.scope td{text-align:left;padding:16px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+.scope th{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.scope td:first-child{width:30%}
+.scope .item{font-weight:600;color:var(--text)}
+.scope .tagm{display:inline-block;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--muted);margin-top:5px}
+.scope td ul{margin:0;padding-left:18px;color:#cfcfca}
+.scope td ul li{margin:2px 0}
+.scope .qty{color:var(--gold-l);white-space:nowrap;font-weight:400}
+
+/* results table */
+.res{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:8px}
+.res th,.res td{padding:13px 14px;border-bottom:1px solid var(--line);text-align:left}
+.res th{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.res td.ok{color:var(--gold-l)}
+.res tr:hover{background:var(--bg2)}
+.res .gov td{background:rgba(201,169,110,.06)}
+.allow{display:flex;flex-wrap:wrap;gap:26px;margin-top:22px}
+.allow div{border:1px solid var(--line);padding:14px 18px;background:var(--bg2)}
+.allow .n{color:var(--gold-l);font-size:1.15rem}
+.allow .l{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+
+/* 3D viewer */
+.viewer{position:relative;width:100%;height:min(72vh,640px);border:1px solid var(--line);
+  background:radial-gradient(120% 120% at 50% 20%,#181818,#0c0c0c);overflow:hidden}
+#viewer3d{position:absolute;inset:0;width:100%;height:100%}
+.viewer canvas{display:block;width:100%;height:100%}
+.viewer .hint{position:absolute;left:16px;bottom:14px;font-size:.74rem;color:var(--muted);
+  letter-spacing:.04em;pointer-events:none;background:rgba(0,0,0,.35);padding:6px 10px}
+.viewer .spin{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:14px;color:var(--muted);font-size:.82rem;letter-spacing:.08em}
+.viewer .ring{width:34px;height:34px;border:2px solid var(--line);border-top-color:var(--gold);
+  border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.viewer .poster{position:absolute;inset:0;background-size:contain;background-repeat:no-repeat;
+  background-position:center;background-color:#0c0c0c;display:none}
+
+/* video */
+.videowrap{border:1px solid var(--line);background:#000;overflow:hidden;aspect-ratio:16/9}
+.videowrap video{width:100%;height:100%;object-fit:cover;display:block}
+
+/* note / callout */
+.note{border:1px dashed var(--gold-d);background:rgba(201,169,110,.05);padding:16px 20px;
+  font-size:.86rem;color:var(--muted)}
+.note b{color:var(--gold-l)}
+.callouts{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:8px}
+@media(max-width:720px){.callouts{grid-template-columns:1fr}}
+.callout{border:1px solid var(--line);background:var(--bg2);padding:20px 22px}
+.callout h4{color:var(--text);margin-bottom:8px;display:flex;gap:10px;align-items:baseline}
+.callout h4 span{color:var(--gold);font-size:.8rem}
+.callout p{font-size:.88rem;color:var(--muted);margin:0}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--gold);color:var(--gold-l);
+  padding:12px 22px;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;
+  transition:background .25s,color .25s;cursor:pointer}
+.btn:hover{background:var(--gold);color:#000}
+.btn.ghost{border-color:var(--line);color:var(--muted)}
+.btn.ghost:hover{border-color:var(--gold);color:var(--gold-l);background:transparent}
+.btnrow{display:flex;flex-wrap:wrap;gap:14px;margin-top:26px}
+
+/* two-up knowledge layout */
+.know{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,56px);align-items:start}
+@media(max-width:900px){.know{grid-template-columns:1fr;gap:34px}}
+.checklist{list-style:none;padding:0;margin:18px 0 0}
+.checklist li{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line);font-size:.92rem}
+.checklist .mk{flex:0 0 auto;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;
+  font-size:.7rem;margin-top:2px}
+.mk.y{background:rgba(120,180,120,.16);color:#9ad19a;border:1px solid #3c5c3c}
+.mk.v{background:rgba(201,169,110,.14);color:var(--gold-l);border:1px solid var(--gold-d)}
+.mk.n{background:rgba(190,80,80,.16);color:#e0a0a0;border:1px solid #6b2b2b}
+
+/* footer */
+footer{background:var(--bg2);border-top:1px solid var(--line);padding:64px 0 48px}
+footer .grid-f{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px}
+@media(max-width:760px){footer .grid-f{grid-template-columns:1fr;gap:28px}}
+footer h4{color:var(--gold);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px}
+footer p,footer a{font-size:.9rem;color:var(--muted)}
+footer a:hover{color:var(--gold-l)}
+.legal{margin-top:46px;padding-top:22px;border-top:1px solid var(--line);font-size:.76rem;color:#6a6a64;
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}
+  .thumb img{transition:none}.viewer .ring{animation:none}}
+
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:300;background:rgba(6,6,6,.95);display:none;
+  align-items:center;justify-content:center}
+.lb.open{display:flex}
+.lb img{max-width:92vw;max-height:84vh;border:1px solid #333;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.lb .cap{position:absolute;bottom:24px;left:0;right:0;text-align:center;color:var(--muted);
+  font-size:.84rem;letter-spacing:.02em;padding:0 20px}
+.lb button{position:absolute;background:rgba(20,20,20,.7);border:1px solid #333;color:#eee;
+  width:52px;height:52px;font-size:1.4rem;cursor:pointer;display:grid;place-items:center;transition:.2s}
+.lb button:hover{background:var(--gold);color:#000;border-color:var(--gold)}
+.lb .close{top:22px;right:22px;width:46px;height:46px}
+.lb .prev{left:18px;top:50%;transform:translateY(-50%)}
+.lb .next{right:18px;top:50%;transform:translateY(-50%)}
+@media(max-width:560px){.lb .prev,.lb .next{top:auto;bottom:22px;transform:none}.lb .prev{left:22px}.lb .next{right:22px}}
+</style>
+</head>
+<body>
+<a class="skip" href="#brief">Skip to content</a>
+<header class="nav"><div class="wrap">
+  <a class="brand" href="#top">CA<b>works</b></a>
+  <nav>
+    <a href="#brief">The brief</a>
+    <a href="#process">Process</a>
+    <a href="#opinion">Opinion</a>
+    <a href="#model">3D model</a>
+    <a href="#calcs">Calculations</a>
+    <a href="#compliance">Compliance</a>
+    <a href="#build">Fabrication</a>
+  </nav>
+  <span class="tag">Engineering Case Study</span>
+</div></header>
+
+<section class="hero" id="top">
+  <div class="bg" style="background-image:url('https://res.cloudinary.com/dc99897dw/image/upload/w_2200,q_auto,f_auto/caworks/helical-pitch/workshop-sparks-hero')"></div>
+  <div class="scrim"></div>
+  <div class="wrap">
+    <p class="eyebrow">CAworks · Structural &amp; Architectural Staircases</p>
+    <h1>We were called in to finish — and make safe — what someone else left standing on scaffolding.</h1>
+    <p class="lead">A helical steel staircase, fabricated and erected by another contractor, could only stand because it was propped on temporary works. Under a single person walking, it visibly moved. CAworks was engaged to take ownership of an unfinished, unstable structure and deliver it <strong>safe, code-compliant and beautiful</strong>. This is how.</p>
+    <div class="statbar">
+      <div class="stat"><div class="n">3</div><div class="l">flights, ~13&nbsp;m rise</div></div>
+      <div class="stat"><div class="n">~79</div><div class="l">oak-clad steps</div></div>
+      <div class="stat"><div class="n">Ø610</div><div class="l">central steel mast added</div></div>
+      <div class="stat"><div class="n">2.25</div><div class="l">min. factor of safety</div></div>
+      <div class="stat"><div class="n">10.08&nbsp;Hz</div><div class="l">1st natural frequency</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="brief">
+ <div class="wrap">
+  <div class="cols">
+   <div class="reveal">
+     <p class="eyebrow">The brief</p>
+     <h2>An unfinished structure, held up by temporary props</h2>
+     <hr class="divider">
+     <p>The staircase at the heart of this residence was built and installed before CAworks was involved. When our engineer first walked the site, the helix stood only because scaffolding and auxiliary props were carrying its load and restraining it from twisting.</p>
+     <p>Under controlled walking tests the structure showed <strong>global vibration</strong>, <strong>perceptible torsional flex</strong> and <strong>audible joint movement</strong>. There was <strong>no central column</strong> and no clear, continuous load path; the segmented stringers had been welded together on site with no weld procedures, no inspection records and no verification of the anchors fixing it to the slabs.</p>
+     <p>Our remit was unambiguous: assess it honestly, then engineer, document and rebuild it into a permanent staircase that is structurally sound, fully compliant with the Dubai Building Code, and worthy of the architecture around it.</p>
+     <p style="margin-top:18px"><span class="riskpill"><span class="dot"></span>As-found risk rating: HIGH</span></p>
+   </div>
+   <figure class="reveal">
+     <img class="frame" src="https://res.cloudinary.com/dc99897dw/image/upload/w_1200,q_auto,f_auto/v1781436072/caworks/process-microsite/site/as-found-staircase-scaffolding.png" alt="As-found helical steel staircase encased in temporary scaffolding">
+     <figcaption>As found on site — the bare steel helix carrying load through temporary scaffolding and props.</figcaption>
+   </figure>
+  </div>
+ </div>
+</section>
+
+<section id="process">
+ <div class="wrap">
+  <p class="eyebrow reveal">How we work</p>
+  <h2 class="reveal">From assessment to a finished staircase</h2>
+  <hr class="divider reveal">
+  <p class="lead reveal" style="max-width:62ch">A single accountable team carried the project through five phases — diagnosing the problem, engineering and proving the fix, securing authority approval, then fabricating and finishing to a luxury standard.</p>
+  <div class="phases reveal" style="margin-top:40px">
+    <div class="phase"><div class="pn">Phase 01</div><h4>Assess &amp; advise</h4><p>Site inspection, professional structural opinion and conceptual reinforcement options.</p></div>
+    <div class="phase"><div class="pn">Phase 02</div><h4>Survey &amp; engineer</h4><p>3D laser survey, remediation design, a verified 3D model and full FEA calculations.</p></div>
+    <div class="phase"><div class="pn">Phase 03</div><h4>Compliance &amp; authority</h4><p>Dubai Building Code assessment and the submission pack for the design NOC.</p></div>
+    <div class="phase"><div class="pn">Phase 04</div><h4>Detail &amp; fabricate</h4><p>Shop drawings, workshop steel fabrication, oak treads and curved toughened glass.</p></div>
+    <div class="phase"><div class="pn">Phase 05</div><h4>Install &amp; finish</h4><p>Erection, balustrade and handrails, cladding and final paint finish.</p></div>
+  </div>
+ </div>
+</section>
+
+<section id="inspect">
+ <div class="wrap">
+  <div class="cols rev">
+   <figure class="reveal">
+     <div class="videowrap "><video class="js-autoplay" muted loop playsinline preload="none" poster="https://res.cloudinary.com/dc99897dw/video/upload/w_1400,so_3/caworks-v2/staircase-installation.jpg" controls><source data-src="https://res.cloudinary.com/dc99897dw/video/upload/w_1280,q_auto/caworks-v2/staircase-installation.mp4" type="video/mp4"></video></div>
+     <figcaption>Walking the structure on site. <b style="color:var(--gold-l)">Note:</b> the original as-found walkthrough clip can be dropped straight into this slot.</figcaption>
+   </figure>
+   <div class="reveal">
+     <span class="stepno">Step 01 — Site inspection</span>
+     <h3>Seeing the problem before touching it</h3>
+     <hr class="divider">
+     <p>Every rescue starts with a non-intrusive inspection. We record the as-found geometry and behaviour, walk the structure under load, and listen — joint noise and movement tell you as much as deflection does.</p>
+     <p>Critically, we do <strong>not</strong> remove the temporary supports. At this stage the props are the only thing preventing torsional rotation and overload of the anchors, so they stay in place until an engineered solution is designed and built.</p>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="opinion">
+ <div class="wrap">
+  <span class="stepno reveal">Step 02 — Professional opinion</span>
+  <h2 class="reveal">A written, signed structural opinion</h2>
+  <hr class="divider reveal">
+  <div class="cols reveal" style="align-items:flex-start;margin-bottom:36px">
+    <p>Before proposing any fix, CAworks issued a formal <strong>Professional Opinion — Condition Assessment &amp; Structural Adequacy Review</strong>, prepared by a chartered engineer. It documents what was observed, classifies the risk, and sets out conceptual reinforcement strategies — without yet committing to a design.</p>
+    <p>The conclusion was direct: in its as-found configuration the staircase was <strong>structurally unstable without its temporary supports</strong>, with a real risk of progressive connection failure if they were removed. The full document is reproduced below with client details removed.</p>
+  </div>
+  <div class="grid g-4 reveal"><button class="thumb" data-lb data-group="opinion" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435912/caworks/process-microsite/opinion/opinion_p01.png" style="aspect-ratio:3/4" aria-label="Open Opinion · p1"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435912/caworks/process-microsite/opinion/opinion_p01.png" loading="lazy" alt="Opinion · p1"><span class="thumb-cap">Opinion · p1</span></button><button class="thumb" data-lb data-group="opinion" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435913/caworks/process-microsite/opinion/opinion_p02.png" style="aspect-ratio:3/4" aria-label="Open Opinion · p2"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435913/caworks/process-microsite/opinion/opinion_p02.png" loading="lazy" alt="Opinion · p2"><span class="thumb-cap">Opinion · p2</span></button><button class="thumb" data-lb data-group="opinion" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435914/caworks/process-microsite/opinion/opinion_p03.png" style="aspect-ratio:3/4" aria-label="Open Opinion · p3"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435914/caworks/process-microsite/opinion/opinion_p03.png" loading="lazy" alt="Opinion · p3"><span class="thumb-cap">Opinion · p3</span></button><button class="thumb" data-lb data-group="opinion" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435915/caworks/process-microsite/opinion/opinion_p04.png" style="aspect-ratio:3/4" aria-label="Open Opinion · p4"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435915/caworks/process-microsite/opinion/opinion_p04.png" loading="lazy" alt="Opinion · p4"><span class="thumb-cap">Opinion · p4</span></button><button class="thumb" data-lb data-group="opinion" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435916/caworks/process-microsite/opinion/opinion_p05.png" style="aspect-ratio:3/4" aria-label="Open Opinion · p5"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435916/caworks/process-microsite/opinion/opinion_p05.png" loading="lazy" alt="Opinion · p5"><span class="thumb-cap">Opinion · p5</span></button><button class="thumb" data-lb data-group="opinion" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435917/caworks/process-microsite/opinion/opinion_p06.png" style="aspect-ratio:3/4" aria-label="Open Opinion · p6"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435917/caworks/process-microsite/opinion/opinion_p06.png" loading="lazy" alt="Opinion · p6"><span class="thumb-cap">Opinion · p6</span></button><button class="thumb" data-lb data-group="opinion" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435918/caworks/process-microsite/opinion/opinion_p07.png" style="aspect-ratio:3/4" aria-label="Open Opinion · p7"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435918/caworks/process-microsite/opinion/opinion_p07.png" loading="lazy" alt="Opinion · p7"><span class="thumb-cap">Opinion · p7</span></button><button class="thumb" data-lb data-group="opinion" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435919/caworks/process-microsite/opinion/opinion_p08.png" style="aspect-ratio:3/4" aria-label="Open Opinion · p8"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435919/caworks/process-microsite/opinion/opinion_p08.png" loading="lazy" alt="Opinion · p8"><span class="thumb-cap">Opinion · p8</span></button><button class="thumb" data-lb data-group="opinion" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435919/caworks/process-microsite/opinion/opinion_p09.png" style="aspect-ratio:3/4" aria-label="Open Opinion · p9"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435919/caworks/process-microsite/opinion/opinion_p09.png" loading="lazy" alt="Opinion · p9"><span class="thumb-cap">Opinion · p9</span></button><button class="thumb" data-lb data-group="opinion" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435920/caworks/process-microsite/opinion/opinion_p10.png" style="aspect-ratio:3/4" aria-label="Open Opinion · p10"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435920/caworks/process-microsite/opinion/opinion_p10.png" loading="lazy" alt="Opinion · p10"><span class="thumb-cap">Opinion · p10</span></button><button class="thumb" data-lb data-group="opinion" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435921/caworks/process-microsite/opinion/opinion_p11.png" style="aspect-ratio:3/4" aria-label="Open Opinion · p11"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435921/caworks/process-microsite/opinion/opinion_p11.png" loading="lazy" alt="Opinion · p11"><span class="thumb-cap">Opinion · p11</span></button><button class="thumb" data-lb data-group="opinion" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435921/caworks/process-microsite/opinion/opinion_p12.png" style="aspect-ratio:3/4" aria-label="Open Opinion · p12"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435921/caworks/process-microsite/opinion/opinion_p12.png" loading="lazy" alt="Opinion · p12"><span class="thumb-cap">Opinion · p12</span></button><button class="thumb" data-lb data-group="opinion" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435922/caworks/process-microsite/opinion/opinion_p13.png" style="aspect-ratio:3/4" aria-label="Open Opinion · p13"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435922/caworks/process-microsite/opinion/opinion_p13.png" loading="lazy" alt="Opinion · p13"><span class="thumb-cap">Opinion · p13</span></button><button class="thumb" data-lb data-group="opinion" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435923/caworks/process-microsite/opinion/opinion_p14.png" style="aspect-ratio:3/4" aria-label="Open Opinion · p14"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435923/caworks/process-microsite/opinion/opinion_p14.png" loading="lazy" alt="Opinion · p14"><span class="thumb-cap">Opinion · p14</span></button><button class="thumb" data-lb data-group="opinion" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435924/caworks/process-microsite/opinion/opinion_p15.png" style="aspect-ratio:3/4" aria-label="Open Opinion · p15"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435924/caworks/process-microsite/opinion/opinion_p15.png" loading="lazy" alt="Opinion · p15"><span class="thumb-cap">Opinion · p15</span></button><button class="thumb" data-lb data-group="opinion" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435924/caworks/process-microsite/opinion/opinion_p16.png" style="aspect-ratio:3/4" aria-label="Open Opinion · p16"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435924/caworks/process-microsite/opinion/opinion_p16.png" loading="lazy" alt="Opinion · p16"><span class="thumb-cap">Opinion · p16</span></button></div>
+  <div class="btnrow reveal">
+    <a class="btn" href="https://res.cloudinary.com/dc99897dw/raw/upload/v1781435995/caworks/process-microsite/docs/opinion-report.pdf" target="_blank" rel="noopener">↓ Download the full opinion (PDF)</a>
+    <span class="btn ghost" style="cursor:default;pointer-events:none">16 pages · client-anonymised</span>
+  </div>
+ </div>
+</section>
+
+<section id="concepts">
+ <div class="wrap">
+  <span class="stepno reveal">Step 03 — Concept options</span>
+  <h2 class="reveal">Five ways to make it stand on its own</h2>
+  <hr class="divider reveal">
+  <p class="lead reveal" style="max-width:64ch">Rather than jump to one answer, we set out the realistic reinforcement strategies, each with its structural logic and its impact on the architecture — so the design conversation could be had on engineering terms.</p>
+  <div class="opts reveal" style="margin-top:36px"><article class="opt-card"><button class="thumb" data-lb data-group="concepts" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/v1781435944/caworks/process-microsite/concepts/option-a-lateral-fixing.png" style="aspect-ratio:4/3" aria-label="Open Option A — Lateral fixing to structural walls"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_500,q_auto,f_auto/v1781435944/caworks/process-microsite/concepts/option-a-lateral-fixing.png" loading="lazy" alt="Option A — Lateral fixing to structural walls"><span class="thumb-cap">Option A — Lateral fixing to structural walls</span></button><h4>Option A — Lateral fixing to structural walls</h4><p>Rigid connections tie the stringers back to the reinforced-concrete walls, cutting the cantilever span and restraining torsion. Concealed behind cladding to suit the architecture.</p></article><article class="opt-card"><button class="thumb" data-lb data-group="concepts" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/v1781435945/caworks/process-microsite/concepts/option-b-central-column.png" style="aspect-ratio:4/3" aria-label="Open Option B — Central / vertical support column"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_500,q_auto,f_auto/v1781435945/caworks/process-microsite/concepts/option-b-central-column.png" loading="lazy" alt="Option B — Central / vertical support column"><span class="thumb-cap">Option B — Central / vertical support column</span></button><h4>Option B — Central / vertical support column</h4><p>One or more steel columns carry vertical load directly to the slab, all but eliminating cantilever action and global deflection. Clad or decorated to match the design intent.</p></article><article class="opt-card"><button class="thumb" data-lb data-group="concepts" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/v1781435946/caworks/process-microsite/concepts/option-c-suspended-rods.png" style="aspect-ratio:4/3" aria-label="Open Option C — Suspended rods from above"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_500,q_auto,f_auto/v1781435946/caworks/process-microsite/concepts/option-c-suspended-rods.png" loading="lazy" alt="Option C — Suspended rods from above"><span class="thumb-cap">Option C — Suspended rods from above</span></button><h4>Option C — Suspended rods from above</h4><p>Steel tension rods hung from a new structural beam transfer vertical and torsional load upward. Effective, but dependent on new primary steel overhead.</p></article><article class="opt-card"><button class="thumb" data-lb data-group="concepts" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/v1781435947/caworks/process-microsite/concepts/option-d-reposition.png" style="aspect-ratio:4/3" aria-label="Open Option D — Reposition to engage a wall"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_500,q_auto,f_auto/v1781435947/caworks/process-microsite/concepts/option-d-reposition.png" loading="lazy" alt="Option D — Reposition to engage a wall"><span class="thumb-cap">Option D — Reposition to engage a wall</span></button><h4>Option D — Reposition to engage a wall</h4><p>Shifting the helix to bear against a structural wall gives a direct, redundant load path without visible lateral ties — at the cost of moving the architectural set-out.</p></article><article class="opt-card"><button class="thumb" data-lb data-group="concepts" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/v1781435948/caworks/process-microsite/concepts/option-e-stiffening-triangles.png" style="aspect-ratio:4/3" aria-label="Open Option E — Tread stiffening + added stringer"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_500,q_auto,f_auto/v1781435948/caworks/process-microsite/concepts/option-e-stiffening-triangles.png" loading="lazy" alt="Option E — Tread stiffening + added stringer"><span class="thumb-cap">Option E — Tread stiffening + added stringer</span></button><h4>Option E — Tread stiffening + added stringer</h4><p>Welded triangular stiffeners under each tread and a second outer stringer raise local rigidity. A complementary measure, recommended alongside one of the primary schemes.</p></article></div>
+  <div class="chosen reveal">
+    <p style="margin:0"><b>The direction taken.</b> The remediation combined a <b>central structural mast (Ø610 × 14.3&nbsp;mm CHS)</b> with radial support arms and welded brackets — an Option&nbsp;B-style spine that gives the helix a clear vertical load path — reinforced by tread-level stiffening and an outer stringer anchored back to the wall. It removes the torsional instability at its root while staying invisible behind the finished treads and glass.</p>
+  </div>
+ </div>
+</section>
+
+<section id="scope">
+ <div class="wrap">
+  <span class="stepno reveal">Step 04 — Scope of works</span>
+  <h2 class="reveal">What the rescue actually involved</h2>
+  <hr class="divider reveal">
+  <p class="reveal" style="max-width:64ch">A single scope took the staircase from survey to a finished, certified installation — engineering, reinforcement, and the full architectural finish.</p>
+  <div class="frame reveal" style="margin-top:30px;overflow-x:auto">
+   <table class="scope">
+    <thead><tr><th>Work package</th><th>Description</th><th>Qty</th></tr></thead>
+    <tbody>
+     <tr><td><span class="item">Survey &amp; design</span><br><span class="tagm">Design</span></td>
+       <td><ul><li>Site preparation &amp; set-out for 3D scanning</li><li>Detailed 3D laser scan / survey of the as-built structure</li><li>3D model for client &amp; architect approval (up to two design revisions)</li><li>Full fabrication drawing set</li><li>Structural engineering calculations confirming every connection</li></ul></td><td class="qty">1</td></tr>
+     <tr><td><span class="item">Project management</span><br><span class="tagm">Labour</span></td>
+       <td>Specification, design &amp; fabrication management, production and installation supervision.</td><td class="qty">1</td></tr>
+     <tr><td><span class="item">Staircase reinforcement</span><br><span class="tagm">Metalwork</span></td>
+       <td>On-site and workshop steelwork to reinforce the existing structure and limit deflection — the central mast, brackets and stiffening.</td><td class="qty">1</td></tr>
+     <tr><td><span class="item">Hardwood oak step cladding</span><br><span class="tagm">Timber</span></td>
+       <td><ul><li>Top- and bottom-shaped solid oak steps</li><li>20&nbsp;mm hardwood, stained / varnished to selection</li></ul></td><td class="qty">~79 steps</td></tr>
+     <tr><td><span class="item">Curved glass balustrade</span><br><span class="tagm">Glass</span></td>
+       <td><ul><li>Tempered, polished, clear laminated glass</li><li>Installed into bespoke slotted metal brackets</li><li>Final thickness to technical design (17.5&nbsp;mm)</li></ul></td><td class="qty">~62 LM</td></tr>
+     <tr><td><span class="item">Finishing</span><br><span class="tagm">Paint</span></td>
+       <td>Polishing, priming and painting the steelwork to a selected RAL colour.</td><td class="qty">3 flights</td></tr>
+     <tr><td><span class="item">Stringer cladding</span><br><span class="tagm">Detail</span></td>
+       <td>Cladding the stringers to conceal connections for a seamless finished line.</td><td class="qty">3 flights</td></tr>
+    </tbody>
+   </table>
+  </div>
+  <p class="note reveal" style="margin-top:18px">Commercial figures are intentionally omitted from this case study.</p>
+ </div>
+</section>
+
+<section id="laser">
+ <div class="wrap">
+  <div class="cols">
+   <div class="reveal">
+     <span class="stepno">Step 05 — 3D laser survey</span>
+     <h2>Measuring reality, not the drawing</h2>
+     <hr class="divider">
+     <p>A hand-built, segmented, site-welded staircase never matches its original drawings. Segments drift during erection, welds pull the geometry, and the surrounding slabs and walls are rarely exactly where the architect's model says. To engineer a fix that actually fits, we first capture the structure as it truly is.</p>
+     <p>A <strong>3D laser scanner (LiDAR)</strong> sweeps the space, firing hundreds of thousands of pulses per second and timing each reflection to fix a point in space. The result is a dense <strong>point cloud</strong> — millions of measured points — that we register into a single survey-accurate model. Photogrammetry adds true-colour texture where it helps.</p>
+     <p>That captured geometry becomes the master reference for the reinforcement design, the FEA model, and the millimetre-accurate detailing of the oak treads and curved glass — eliminating guesswork and avoiding expensive re-work on site.</p>
+   </div>
+   <div class="reveal">
+     <div class="allow" style="margin-top:0">
+       <div><div class="n">±2–3&nbsp;mm</div><div class="l">typical point accuracy</div></div>
+       <div><div class="n">sub-mm</div><div class="l">survey-grade range</div></div>
+       <div><div class="n">10⁶+</div><div class="l">measured points</div></div>
+       <div><div class="n">1:1</div><div class="l">as-built &rarr; model</div></div>
+     </div>
+     <figure style="margin-top:18px">
+       <img class="frame" src="https://res.cloudinary.com/dc99897dw/image/upload/w_1200,q_auto,f_auto/caworks/helical-pitch/install-timber-treads" alt="Helical steel structure captured from above">
+       <figcaption>The real, as-built helix — the geometry the survey captures point-by-point.</figcaption>
+     </figure>
+     <p class="note" style="margin-top:14px"><b>Add the scan:</b> a hosted point-cloud / Matterport walkthrough link can be embedded here on request.</p>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="model">
+ <div class="wrap">
+  <span class="stepno reveal">Step 06 — Verified 3D model</span>
+  <h2 class="reveal">Explore the engineered assembly</h2>
+  <hr class="divider reveal">
+  <p class="lead reveal" style="max-width:64ch">From the survey we rebuild a precise 3D model of the remediated staircase — the central mast, radial arms, helical stringers, treads and balustrade line. Drag to orbit, scroll to zoom.</p>
+  <div class="viewer reveal" style="margin-top:30px">
+    <div id="viewer3d"></div>
+    <div class="spin" id="v-spin"><div class="ring"></div>Loading 3D model…</div>
+    <div class="poster" id="v-poster" style="background-image:url('https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435926/caworks/process-microsite/drawings/drawings_p02.png')"></div>
+    <div class="hint">Drag to rotate · scroll to zoom · right-drag to pan</div>
+  </div>
+ </div>
+</section>
+
+<section id="calcs">
+ <div class="wrap">
+  <span class="stepno reveal">Step 07 — Structural calculations</span>
+  <h2 class="reveal">Proving it with finite-element analysis</h2>
+  <hr class="divider reveal">
+  <p class="reveal" style="max-width:66ch">The remediated design was verified in <strong>SOLIDWORKS Simulation</strong> against the Dubai Building Code, ASCE&nbsp;7-16 and Eurocode&nbsp;1 — five static studies plus a modal analysis, on grade <strong>S275JR</strong> steel. The full-assembly model identifies the worst-loaded flight; every result is checked against code allowables.</p>
+  <div class="grid g-3 reveal" style="margin-top:30px"><button class="thumb" data-lb data-group="fea" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/v1781435933/caworks/process-microsite/structural/fea-static2-full-assembly-stress.jpg" style="aspect-ratio:4/3" aria-label="Open Governing live-load case — von Mises stress across all three flights. Peak 122 MPa on the middle flight."><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_500,q_auto,f_auto/v1781435933/caworks/process-microsite/structural/fea-static2-full-assembly-stress.jpg" loading="lazy" alt="Governing live-load case — von Mises stress across all three flights. Peak 122 MPa on the middle flight."><span class="thumb-cap">Governing live-load case — von Mises stress across all three flights. Peak 122 MPa on the middle flight.</span></button><button class="thumb" data-lb data-group="fea" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/v1781435932/caworks/process-microsite/structural/fea-flight-fos-detail.jpg" style="aspect-ratio:4/3" aria-label="Open Factor-of-safety field on the governing flight — minimum 2.25 at a welded bracket."><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_500,q_auto,f_auto/v1781435932/caworks/process-microsite/structural/fea-flight-fos-detail.jpg" loading="lazy" alt="Factor-of-safety field on the governing flight — minimum 2.25 at a welded bracket."><span class="thumb-cap">Factor-of-safety field on the governing flight — minimum 2.25 at a welded bracket.</span></button><button class="thumb" data-lb data-group="fea" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/v1781435930/caworks/process-microsite/structural/fea-displacement-deformed.jpg" style="aspect-ratio:4/3" aria-label="Open Deflected shape under full live load (scaled). Peak movement 1.82 mm."><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_500,q_auto,f_auto/v1781435930/caworks/process-microsite/structural/fea-displacement-deformed.jpg" loading="lazy" alt="Deflected shape under full live load (scaled). Peak movement 1.82 mm."><span class="thumb-cap">Deflected shape under full live load (scaled). Peak movement 1.82 mm.</span></button><button class="thumb" data-lb data-group="fea" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/v1781435932/caworks/process-microsite/structural/fea-static1-assembly-stress.jpg" style="aspect-ratio:4/3" aria-label="Open Dead-load-only state of the complete assembly — lightly stressed, FoS 6.39."><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_500,q_auto,f_auto/v1781435932/caworks/process-microsite/structural/fea-static1-assembly-stress.jpg" loading="lazy" alt="Dead-load-only state of the complete assembly — lightly stressed, FoS 6.39."><span class="thumb-cap">Dead-load-only state of the complete assembly — lightly stressed, FoS 6.39.</span></button><button class="thumb" data-lb data-group="fea" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/v1781435931/caworks/process-microsite/structural/fea-flight-displacement.jpg" style="aspect-ratio:4/3" aria-label="Open Local displacement at a concentrated 3 kN foot patch."><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_500,q_auto,f_auto/v1781435931/caworks/process-microsite/structural/fea-flight-displacement.jpg" loading="lazy" alt="Local displacement at a concentrated 3 kN foot patch."><span class="thumb-cap">Local displacement at a concentrated 3 kN foot patch.</span></button><button class="thumb" data-lb data-group="fea" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/v1781435929/caworks/process-microsite/structural/fea-column-stress.jpg" style="aspect-ratio:4/3" aria-label="Open Central Ø610 mast — stress under the 196.5 kN support reaction."><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_500,q_auto,f_auto/v1781435929/caworks/process-microsite/structural/fea-column-stress.jpg" loading="lazy" alt="Central Ø610 mast — stress under the 196.5 kN support reaction."><span class="thumb-cap">Central Ø610 mast — stress under the 196.5 kN support reaction.</span></button></div>
+  <div class="frame reveal" style="margin-top:26px;overflow-x:auto">
+   <table class="res">
+    <thead><tr><th>Study</th><th>Load case</th><th>Peak stress</th><th>Deflection</th><th>Min. FoS</th></tr></thead>
+    <tbody>
+      <tr><td>Static 1</td><td>Dead load — full assembly</td><td>43.0 MPa <span class="kicker">(16% of yield)</span></td><td>0.94 mm</td><td class="ok">6.39</td></tr>
+      <tr class="gov"><td>Static 2</td><td>3.0 kN/m² live — <strong>governing</strong></td><td>122.3 MPa <span class="kicker">(44% of yield)</span></td><td>1.82 mm</td><td class="ok">2.25</td></tr>
+      <tr><td>Static 3</td><td>3 kN point load — position 1</td><td>67.2 MPa</td><td>0.64 mm</td><td class="ok">4.09</td></tr>
+      <tr><td>Static 4</td><td>3 kN point load — position 2</td><td>68.7 MPa</td><td>0.83 mm</td><td class="ok">4.00</td></tr>
+      <tr><td>Static 5</td><td>3 kN point load — position 3</td><td>53.8 MPa</td><td>0.56 mm</td><td class="ok">5.11</td></tr>
+      <tr><td>Modal</td><td>1st natural frequency</td><td colspan="2" style="color:var(--muted)">no footfall resonance</td><td class="ok">10.08 Hz</td></tr>
+    </tbody>
+   </table>
+  </div>
+  <div class="allow reveal">
+    <div><div class="n">≤ 275 MPa</div><div class="l">allowable stress (S275JR)</div></div>
+    <div><div class="n">≤ ~13 mm</div><div class="l">deflection limit (L/300)</div></div>
+    <div><div class="n">&gt; 8 Hz</div><div class="l">frequency (DBC)</div></div>
+    <div><div class="n">196.5 kN</div><div class="l">vertical support reaction</div></div>
+  </div>
+  <p class="reveal" style="margin-top:24px;max-width:66ch">Every check passes with margin. The lowest factor of safety — 2.25 at a single welded bracket on the middle flight — sits above the residential threshold of 2.0, and the first natural frequency of 10.08&nbsp;Hz is comfortably clear of the footfall range, so the finished stair feels firm underfoot rather than springy.</p>
+  <div class="btnrow reveal">
+    <a class="btn" href="https://res.cloudinary.com/dc99897dw/raw/upload/v1781435952/caworks/process-microsite/docs/structural-report.pdf" target="_blank" rel="noopener">↓ Download the verification report (PDF)</a>
+  </div>
+  <div class="grid g-4 reveal" style="margin-top:26px"><button class="thumb" data-lb data-group="structdoc" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435927/caworks/process-microsite/structural/structural_p01.png" style="aspect-ratio:3/4" aria-label="Open Verification report · p1"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435927/caworks/process-microsite/structural/structural_p01.png" loading="lazy" alt="Verification report · p1"><span class="thumb-cap">Verification report · p1</span></button><button class="thumb" data-lb data-group="structdoc" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435928/caworks/process-microsite/structural/structural_p02.png" style="aspect-ratio:3/4" aria-label="Open Verification report · p2"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435928/caworks/process-microsite/structural/structural_p02.png" loading="lazy" alt="Verification report · p2"><span class="thumb-cap">Verification report · p2</span></button><button class="thumb" data-lb data-group="structdoc" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435928/caworks/process-microsite/structural/structural_p03.png" style="aspect-ratio:3/4" aria-label="Open Verification report · p3"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435928/caworks/process-microsite/structural/structural_p03.png" loading="lazy" alt="Verification report · p3"><span class="thumb-cap">Verification report · p3</span></button><button class="thumb" data-lb data-group="structdoc" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435929/caworks/process-microsite/structural/structural_p08.png" style="aspect-ratio:3/4" aria-label="Open Verification report · p4"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435929/caworks/process-microsite/structural/structural_p08.png" loading="lazy" alt="Verification report · p4"><span class="thumb-cap">Verification report · p4</span></button></div>
+ </div>
+</section>
+
+<section id="compliance">
+ <div class="wrap">
+  <span class="stepno reveal">Step 08 — Code compliance</span>
+  <h2 class="reveal">Reading the code the way a reviewer will</h2>
+  <hr class="divider reveal">
+  <p class="lead reveal" style="max-width:68ch">A staircase passes authority review only if it is assessed clause-by-clause against the right code. Below is the actual reasoning CAworks set out against the <strong>Dubai Building Code 2021, Part&nbsp;K (Villas)</strong> — shown next to the real regulation pages it relies on.</p>
+
+  <div class="know reveal" style="margin-top:38px">
+   <div>
+     <h3>The train of thought</h3>
+     <hr class="divider">
+     <p><strong>1 · Classify the stair correctly.</strong> This is a helical / curved stair, assessed under clause <strong>K.5.5.2.8</strong> (spiral &amp; curved stairs and winders). Because its tread band sits well away from the centre, we tested it against <em>both</em> the spiral and the curved thresholds — and it satisfies both, so the classification debate never changes the outcome.</p>
+     <p><strong>2 · Confirm it is even permitted.</strong> K.5.5.2.1 expressly allows spiral, winder and open stairs in villas for everything except basement egress. This stair serves no basement, so no fire-rated enclosure is imposed by Part&nbsp;K.</p>
+     <p><strong>3 · Separate requirements from recommendations.</strong> Intermediate landings (K.5.5.2.4) are a <em>recommendation</em> for villa flights over 4&nbsp;m — not a requirement; the 3,660&nbsp;mm between-landings limit belongs to Part&nbsp;B / the Fire &amp; Life Safety Code and does <em>not</em> apply to villa stairs; the "spiral not recommended as a main stair" line is advisory, not a prohibition. Knowing which is which is what keeps a submission moving.</p>
+     <p><strong>4 · Report the one genuine conflict honestly.</strong> Clause h) wants the outer handrail on the descending user's right; this helix turns the other way, placing the outer edge on the left. Handing is fixed by the direction of the spiral — it can only be "corrected" by mirroring the whole stair, which the architecture won't allow. So we record it as <strong>non-compliant as designed</strong> and propose a documented mitigation rather than hiding it.</p>
+     <ul class="checklist">
+       <li><span class="mk y">✓</span><div><strong>10 checks</strong> — compliant as designed</div></li>
+       <li><span class="mk v">~</span><div><strong>3 checks</strong> — standard verifications closed at shop-drawing stage (handrail geometry, guardrail heights &amp; gaps, tread traction)</div></li>
+       <li><span class="mk n">!</span><div><strong>1 check</strong> — stair handing K.5.5.2.8 h): non-compliant as designed, with an engineering-judgment mitigation (continuous handrails both sides + generous tread depth, riser height, width and guarding) put to the authority at design-NOC stage</div></li>
+     </ul>
+   </div>
+   <div>
+     <h3>The regulations themselves</h3>
+     <hr class="divider">
+     <p>The assessment reproduces every clause it relies on. These are the actual Dubai Building Code pages behind the matrix above.</p>
+     <div class="grid g-3" style="margin-top:18px"><button class="thumb" data-lb data-group="dbc" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435938/caworks/process-microsite/compliance/extract-dbc710.png" style="aspect-ratio:3/4" aria-label="Open Part K — circulation &amp; landings"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435938/caworks/process-microsite/compliance/extract-dbc710.png" loading="lazy" alt="Part K — circulation &amp; landings"><span class="thumb-cap">Part K — circulation &amp; landings</span></button><button class="thumb" data-lb data-group="dbc" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435939/caworks/process-microsite/compliance/extract-dbc711.png" style="aspect-ratio:3/4" aria-label="Open Part K — risers &amp; treads"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435939/caworks/process-microsite/compliance/extract-dbc711.png" loading="lazy" alt="Part K — risers &amp; treads"><span class="thumb-cap">Part K — risers &amp; treads</span></button><button class="thumb" data-lb data-group="dbc" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435940/caworks/process-microsite/compliance/extract-dbc712.png" style="aspect-ratio:3/4" aria-label="Open Part K — headroom &amp; handrail"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435940/caworks/process-microsite/compliance/extract-dbc712.png" loading="lazy" alt="Part K — headroom &amp; handrail"><span class="thumb-cap">Part K — headroom &amp; handrail</span></button><button class="thumb" data-lb data-group="dbc" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435942/caworks/process-microsite/compliance/extract-dbc715.png" style="aspect-ratio:3/4" aria-label="Open Part K — spiral / curved stairs (incl. handing)"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435942/caworks/process-microsite/compliance/extract-dbc715.png" loading="lazy" alt="Part K — spiral / curved stairs (incl. handing)"><span class="thumb-cap">Part K — spiral / curved stairs (incl. handing)</span></button><button class="thumb" data-lb data-group="dbc" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435943/caworks/process-microsite/compliance/extract-dbc716.png" style="aspect-ratio:3/4" aria-label="Open Part K — curved-stair tread figure"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435943/caworks/process-microsite/compliance/extract-dbc716.png" loading="lazy" alt="Part K — curved-stair tread figure"><span class="thumb-cap">Part K — curved-stair tread figure</span></button><button class="thumb" data-lb data-group="dbc" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435941/caworks/process-microsite/compliance/extract-dbc714.png" style="aspect-ratio:3/4" aria-label="Open Part K — guardrails"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435941/caworks/process-microsite/compliance/extract-dbc714.png" loading="lazy" alt="Part K — guardrails"><span class="thumb-cap">Part K — guardrails</span></button><button class="thumb" data-lb data-group="dbc" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435937/caworks/process-microsite/compliance/extract-dbc065.png" style="aspect-ratio:3/4" aria-label="Open Part K — landings (floor-to-floor)"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435937/caworks/process-microsite/compliance/extract-dbc065.png" loading="lazy" alt="Part K — landings (floor-to-floor)"><span class="thumb-cap">Part K — landings (floor-to-floor)</span></button><button class="thumb" data-lb data-group="dbc" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435943/caworks/process-microsite/compliance/extract-planview.png" style="aspect-ratio:3/4" aria-label="Open Tread band — model plan section"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435943/caworks/process-microsite/compliance/extract-planview.png" loading="lazy" alt="Tread band — model plan section"><span class="thumb-cap">Tread band — model plan section</span></button></div>
+   </div>
+  </div>
+
+  <div class="reveal" style="margin-top:46px">
+    <h3>The compliance assessment</h3>
+    <hr class="divider">
+    <p style="max-width:66ch">Issued for the project's Consultant of Record to counter-sign and submit — a clause-by-clause matrix, the recommendation-vs-requirement reasoning, and the handing mitigation, all in one document.</p>
+    <div class="grid g-5" style="margin-top:18px"><button class="thumb" data-lb data-group="dbcdoc" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435934/caworks/process-microsite/compliance/dbc_p01.png" style="aspect-ratio:3/4" aria-label="Open Compliance report · p1"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435934/caworks/process-microsite/compliance/dbc_p01.png" loading="lazy" alt="Compliance report · p1"><span class="thumb-cap">Compliance report · p1</span></button><button class="thumb" data-lb data-group="dbcdoc" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435934/caworks/process-microsite/compliance/dbc_p02.png" style="aspect-ratio:3/4" aria-label="Open Compliance report · p2"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435934/caworks/process-microsite/compliance/dbc_p02.png" loading="lazy" alt="Compliance report · p2"><span class="thumb-cap">Compliance report · p2</span></button><button class="thumb" data-lb data-group="dbcdoc" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435935/caworks/process-microsite/compliance/dbc_p03.png" style="aspect-ratio:3/4" aria-label="Open Compliance report · p3"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435935/caworks/process-microsite/compliance/dbc_p03.png" loading="lazy" alt="Compliance report · p3"><span class="thumb-cap">Compliance report · p3</span></button><button class="thumb" data-lb data-group="dbcdoc" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435936/caworks/process-microsite/compliance/dbc_p04.png" style="aspect-ratio:3/4" aria-label="Open Compliance report · p4"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435936/caworks/process-microsite/compliance/dbc_p04.png" loading="lazy" alt="Compliance report · p4"><span class="thumb-cap">Compliance report · p4</span></button><button class="thumb" data-lb data-group="dbcdoc" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435937/caworks/process-microsite/compliance/dbc_p05.png" style="aspect-ratio:3/4" aria-label="Open Compliance report · p5"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435937/caworks/process-microsite/compliance/dbc_p05.png" loading="lazy" alt="Compliance report · p5"><span class="thumb-cap">Compliance report · p5</span></button></div>
+    <div class="btnrow">
+      <a class="btn" href="https://res.cloudinary.com/dc99897dw/raw/upload/v1781435952/caworks/process-microsite/docs/dbc-report.pdf" target="_blank" rel="noopener">↓ Download the compliance assessment (PDF)</a>
+    </div>
+  </div>
+ </div>
+</section>
+
+<section id="dda">
+ <div class="wrap">
+  <span class="stepno reveal">Step 09 — Authority submission (NOC)</span>
+  <h2 class="reveal">Why the approval has to be right — and on time</h2>
+  <hr class="divider reveal">
+  <p class="lead reveal" style="max-width:68ch">In Dubai, structural and life-safety documentation for a villa staircase is submitted through the project's Consultant of Record for authority review and a design <strong>No-Objection Certificate (NOC)</strong> before fabrication is released — and a completion certificate is needed at the end. Getting it wrong, or letting it slip, has real consequences.</p>
+  <div class="callouts reveal" style="margin-top:34px">
+    <div class="callout"><h4><span>01</span> Fabrication can't be released</h4><p>If the design is rejected or queried, fabrication is held. A structure already on site stays propped, unusable and exposed — exactly the position this project started from.</p></div>
+    <div class="callout"><h4><span>02</span> Completion certificate withheld</h4><p>Without compliant, signed-off staircase documentation, the villa's completion and handover can be blocked — delaying occupancy and final payments across the whole project.</p></div>
+    <div class="callout"><h4><span>03</span> Penalties &amp; liability</h4><p>Unpermitted or non-compliant structural work exposes owner and contractors to municipal penalties, invalidated insurance, and direct liability should the stair ever fail in use.</p></div>
+    <div class="callout"><h4><span>04</span> Rework or removal</h4><p>A stair built ahead of approval may have to be modified — or removed — to satisfy the code: far costlier than engineering and evidencing it correctly the first time.</p></div>
+    <div class="callout"><h4><span>05</span> Programme cost</h4><p>Every week an NOC is delayed pushes the entire fit-out programme, with knock-on standby and re-mobilisation costs across every trade on site.</p></div>
+    <div class="callout"><h4><span>06</span> How CAworks de-risks it</h4><p>We issue the compliance assessment, calculations, GA drawings and glass specification as one coordinated pack — pre-empting the reviewer's questions on landings, classification and handing so the NOC is secured first time.</p></div>
+  </div>
+ </div>
+</section>
+
+<section id="drawings">
+ <div class="wrap">
+  <span class="stepno reveal">Step 10 — Shop drawings</span>
+  <h2 class="reveal">A fabrication-ready drawing pack</h2>
+  <hr class="divider reveal">
+  <p class="reveal" style="max-width:66ch">The engineering resolves into a complete general-arrangement and detail set — plan, elevations, sections A–H, every connection detail, and a 3D isometric set — issued together with the calculations, compliance assessment and glass specification.</p>
+  <div class="grid g-2 reveal" style="margin-top:30px"><button class="thumb" data-lb data-group="draw" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435925/caworks/process-microsite/drawings/drawings_p01.png" style="aspect-ratio:1/1" aria-label="Open GA · plan, elevations, sections &amp; connection details"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435925/caworks/process-microsite/drawings/drawings_p01.png" loading="lazy" alt="GA · plan, elevations, sections &amp; connection details"><span class="thumb-cap">GA · plan, elevations, sections &amp; connection details</span></button><button class="thumb" data-lb data-group="draw" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435926/caworks/process-microsite/drawings/drawings_p02.png" style="aspect-ratio:1/1" aria-label="Open 3D isometric set — remediated assembly with central mast"><img src="https://res.cloudinary.com/dc99897dw/image/upload/w_560,q_auto,f_auto/v1781435926/caworks/process-microsite/drawings/drawings_p02.png" loading="lazy" alt="3D isometric set — remediated assembly with central mast"><span class="thumb-cap">3D isometric set — remediated assembly with central mast</span></button></div>
+  <div class="btnrow reveal">
+    <a class="btn" href="https://res.cloudinary.com/dc99897dw/raw/upload/v1781435995/caworks/process-microsite/docs/drawings-report.pdf" target="_blank" rel="noopener">↓ Open the drawing pack (PDF)</a>
+  </div>
+ </div>
+</section>
+
+<section id="build">
+ <div class="wrap">
+  <span class="stepno reveal">Step 11 — Steel fabrication</span>
+  <h2 class="reveal">Rebuilding the steel, properly this time</h2>
+  <hr class="divider reveal">
+  <div class="cols reveal" style="align-items:flex-start;margin-bottom:30px">
+    <p>The remediation steel — the central Ø610 mast, its radial arms and the load-transfer brackets — is fabricated and welded under controlled workshop conditions, a world away from the unverified site welds of the original. Heavy plate is rolled and cut to the helix, segments are trial-assembled, and every bracket is made to carry its tread's load cleanly into the central spine.</p>
+    <p>This is where decades of curved-staircase fabrication experience matters: getting a multi-segment helix to come together true, with welds that will pass inspection and perform under torsion and fatigue for the life of the building.</p>
+  </div>
+  <figure class="reveal" style="margin-bottom:20px">
+    <div class="videowrap "><video class="js-autoplay" muted loop playsinline preload="none" poster="https://res.cloudinary.com/dc99897dw/video/upload/w_1400,so_3/caworks/videos/helical-promo.jpg" controls><source data-src="https://res.cloudinary.com/dc99897dw/video/upload/w_1280,q_auto,du_16/caworks/videos/helical-promo.mp4" type="video/mp4"></video></div>
+    <figcaption>CAworks workshop — curved helical staircase fabrication.</figcaption>
+  </figure>
+  <div class="grid g-4 reveal"><button class="thumb" data-lb data-group="fab" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/caworks/helical-staircases/reference/fabrication/helical-fabrication-gantry-welding-01" style="aspect-ratio:3/4" aria-label="Open Curved stringer segment under the workshop gantry"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_500,q_auto,f_auto/caworks/helical-staircases/reference/fabrication/helical-fabrication-gantry-welding-01" loading="lazy" alt="Curved stringer segment under the workshop gantry"><span class="thumb-cap">Curved stringer segment under the workshop gantry</span></button><button class="thumb" data-lb data-group="fab" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/caworks/helical-staircases/reference/fabrication/helical-fabrication-assembly-stringer-01" style="aspect-ratio:3/4" aria-label="Open Welding the stringer assembly in controlled conditions"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_500,q_auto,f_auto/caworks/helical-staircases/reference/fabrication/helical-fabrication-assembly-stringer-01" loading="lazy" alt="Welding the stringer assembly in controlled conditions"><span class="thumb-cap">Welding the stringer assembly in controlled conditions</span></button><button class="thumb" data-lb data-group="fab" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/caworks/helical-staircases/reference/fabrication/helical-fabrication-stringer-tread-detail-01" style="aspect-ratio:3/4" aria-label="Open Stringer-to-tread connection detail"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_500,q_auto,f_auto/caworks/helical-staircases/reference/fabrication/helical-fabrication-stringer-tread-detail-01" loading="lazy" alt="Stringer-to-tread connection detail"><span class="thumb-cap">Stringer-to-tread connection detail</span></button><button class="thumb" data-lb data-group="fab" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/caworks/helical-staircases/reference/fabrication/helical-fabrication-multi-segment-hoisting-01" style="aspect-ratio:3/4" aria-label="Open Multi-segment hoisting for trial assembly"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_500,q_auto,f_auto/caworks/helical-staircases/reference/fabrication/helical-fabrication-multi-segment-hoisting-01" loading="lazy" alt="Multi-segment hoisting for trial assembly"><span class="thumb-cap">Multi-segment hoisting for trial assembly</span></button></div>
+ </div>
+</section>
+
+<section id="install">
+ <div class="wrap">
+  <div class="cols rev">
+   <figure class="reveal">
+     <img class="frame" src="https://res.cloudinary.com/dc99897dw/image/upload/w_1200,q_auto,f_auto/caworks/helical-staircases/reference/fabrication/helical-fabrication-multi-segment-hoisting-01" alt="Hoisting a curved steel staircase segment into place">
+     <figcaption>Segments craned and set out against the central mast and slab landings.</figcaption>
+   </figure>
+   <div class="reveal">
+     <span class="stepno">Step 12 — Steel installation</span>
+     <h3>Erected on a clear load path</h3>
+     <hr class="divider">
+     <p>The fabricated assembly is installed against its new central mast and the upper and lower slab landings, with the outer stringer anchored back to the structural wall. Only once the engineered structure is carrying load can the original temporary props finally come out — this time with a verified, continuous load path beneath every step.</p>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="treads">
+ <div class="wrap">
+  <div class="cols">
+   <div class="reveal">
+     <span class="stepno">Step 13 — Tread production</span>
+     <h3>Solid oak, shaped to the helix</h3>
+     <hr class="divider">
+     <p>Each step is clad in solid French oak, top- and bottom-shaped to follow the curve of the helix, finished at ~30&nbsp;mm and stained or varnished to the client's selection. Treads are machined to the surveyed geometry so they seat precisely on the steel below, with consistent nosings around the full sweep of the stair.</p>
+     <p class="note"><b>Tread clip:</b> the close-up tread-machining video can be embedded directly in this section.</p>
+   </div>
+   <figure class="reveal">
+     <img class="frame" src="https://res.cloudinary.com/dc99897dw/image/upload/w_1200,q_auto,f_auto/caworks/helical-pitch/install-timber-treads" alt="Timber treads on a helical staircase">
+     <figcaption>Shaped solid-timber treads fitted around the helix.</figcaption>
+   </figure>
+  </div>
+ </div>
+</section>
+
+<section id="glass">
+ <div class="wrap">
+  <span class="stepno reveal">Step 14 — Glass fabrication</span>
+  <h2 class="reveal">How the curved balustrade is made</h2>
+  <hr class="divider reveal">
+  <div class="know reveal" style="margin-top:30px">
+    <div>
+      <p>The balustrade is <strong>17.5&nbsp;mm curved laminated toughened glass</strong> — among the most demanding products in architectural glass. It is made in four stages:</p>
+      <ol style="color:#cfcfca;padding-left:20px;line-height:1.8">
+        <li><strong>Cut &amp; shape.</strong> Flat float glass is cut to size and the edges are ground and polished — done before any heat treatment, because toughened glass can never be re-cut.</li>
+        <li><strong>Curve.</strong> Each sheet is heated in a bending furnace until it softens and slumps onto a curved mould machined to the exact radius — here close to <strong>R980</strong> — so the curvature is built into the glass itself.</li>
+        <li><strong>Toughen.</strong> The curved pane is rapidly air-quenched (tempered), locking the surface into compression. It becomes several times stronger and, if ever broken, crumbles into small blunt fragments instead of shards.</li>
+        <li><strong>Laminate.</strong> Two curved toughened panes are bonded with a structural interlayer, so the balustrade stays intact and in place even if a pane is damaged.</li>
+      </ol>
+    </div>
+    <div class="grid g-2">
+      <button class="thumb" data-lb data-group="glass" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/caworks/staircase/07_glass/D_curved-glass/cwx-curved-glass-balustrade_p27_i01" style="aspect-ratio:3/4" aria-label="Open Curved laminated glass balustrade"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_500,q_auto,f_auto/caworks/staircase/07_glass/D_curved-glass/cwx-curved-glass-balustrade_p27_i01" loading="lazy" alt="Curved laminated glass balustrade"><span class="thumb-cap">Curved laminated glass balustrade</span></button>
+      <button class="thumb" data-lb data-group="glass" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/caworks/staircase/06_balustrade/B-iii_in-channel/cwx-in-channel-glass_p24_i01" style="aspect-ratio:3/4" aria-label="Open In-channel glass fixing detail"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_500,q_auto,f_auto/caworks/staircase/06_balustrade/B-iii_in-channel/cwx-in-channel-glass_p24_i01" loading="lazy" alt="In-channel glass fixing detail"><span class="thumb-cap">In-channel glass fixing detail</span></button>
+    </div>
+  </div>
+ </div>
+</section>
+
+<section id="finish">
+ <div class="wrap">
+  <div class="cols rev">
+   <figure class="reveal">
+     <img class="frame" src="https://res.cloudinary.com/dc99897dw/image/upload/w_1400,q_auto,f_auto/caworks/helical-staircases/reference/finished/helical-finished-glass-timber-showcase-01" alt="Finished helical staircase with timber treads and glass balustrade">
+     <figcaption>The finished result — steel, oak and glass resolved into one clean line.</figcaption>
+   </figure>
+   <div class="reveal">
+     <span class="stepno">Step 15 — Balustrade, handrails &amp; finishing</span>
+     <h3>From a liability to a centrepiece</h3>
+     <hr class="divider">
+     <p>The curved glass is set into bespoke slotted brackets along the inner line, with <strong>continuous handrails to both sides</strong> — satisfying the compliance mitigation as well as the architecture. The stringers are clad to conceal every connection, and the steel is primed and painted to a selected RAL.</p>
+     <p>What began as an unfinished structure standing on scaffolding leaves site as a <strong>structurally verified, code-assessed and beautifully finished staircase</strong> — delivered by one accountable team.</p>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section id="cta" style="background:linear-gradient(180deg,#0c0c0c,#141414)">
+ <div class="wrap" style="text-align:center">
+  <p class="eyebrow reveal">CAworks · Designer Glass &amp; Structural Staircases</p>
+  <h2 class="reveal" style="max-width:20ch;margin:0 auto">Inspect. Engineer. Fabricate. Finish.</h2>
+  <hr class="divider reveal" style="margin:24px auto 28px">
+  <p class="lead reveal" style="max-width:60ch;margin:0 auto">One team accountable for the structure <em>and</em> the finish — from a propped, unsafe staircase to a certified, beautiful one.</p>
+  <div class="btnrow reveal" style="justify-content:center">
+    <a class="btn" href="mailto:team@caworks.co">Talk to CAworks</a>
+    <a class="btn ghost" href="https://wa.me/971506369524" target="_blank" rel="noopener">WhatsApp +971 50 636 9524</a>
+  </div>
+ </div>
+</section>
+
+<footer>
+ <div class="wrap">
+  <div class="grid-f">
+   <div>
+     <div class="brand" style="font-size:1.3rem;margin-bottom:14px">CA<b style="color:var(--gold)">works</b></div>
+     <p>Designer glass and structural staircases — engineered, fabricated and installed by a single accountable team. Specialists in helical and floating staircases, curved glass and architectural balustrades.</p>
+   </div>
+   <div>
+     <h4>This case study</h4>
+     <p>An anonymised account of a real helical-staircase rescue. All client- and project-identifying details have been removed.</p>
+   </div>
+   <div>
+     <h4>Contact</h4>
+     <p><a href="mailto:team@caworks.co">team@caworks.co</a><br>
+     <a href="https://wa.me/971506369524">+971 50 636 9524</a><br>
+     Al Quoz, Dubai, UAE</p>
+   </div>
+  </div>
+  <div class="legal">
+    <span>CAworks Designer Glass Trading LLC · Commercial Licence 1477645</span>
+    <span>© <span id="yr"></span> CAworks. Engineering case study — for demonstration.</span>
+  </div>
+ </div>
+</footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image viewer">
+  <button class="close" aria-label="Close">&times;</button>
+  <button class="prev" aria-label="Previous">&#8249;</button>
+  <button class="next" aria-label="Next">&#8250;</button>
+  <img src="" alt="">
+  <div class="cap"></div>
+</div>
+
+<script>
+// reveal on scroll
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// lazy video play on view
+const vio=new IntersectionObserver((es)=>{es.forEach(e=>{
+  const v=e.target;
+  if(e.isIntersecting){
+    const s=v.querySelector('source[data-src]');
+    if(s && !s.src){s.src=s.dataset.src; v.load();}
+    v.play().catch(()=>{});
+  } else { v.pause(); }
+})},{threshold:.35});
+document.querySelectorAll('video.js-autoplay').forEach(v=>vio.observe(v));
+
+// lightbox
+const lb=document.getElementById('lb');
+const lbImg=lb.querySelector('img'), lbCap=lb.querySelector('.cap');
+let group=[], idx=0;
+function openLB(btn){
+  const g=btn.dataset.group;
+  group=[...document.querySelectorAll(`[data-lb][data-group="${g}"]`)];
+  idx=group.indexOf(btn); show();
+  lb.classList.add('open'); document.body.style.overflow='hidden';
+}
+function show(){
+  const b=group[idx];
+  lbImg.src=b.dataset.full;
+  lbCap.textContent=b.getAttribute('aria-label')?.replace(/^Open /,'')||'';
+}
+function move(d){idx=(idx+d+group.length)%group.length; show();}
+function closeLB(){lb.classList.remove('open'); lbImg.src=''; document.body.style.overflow='';}
+document.querySelectorAll('[data-lb]').forEach(b=>b.addEventListener('click',()=>openLB(b)));
+lb.querySelector('.close').onclick=closeLB;
+lb.querySelector('.prev').onclick=()=>move(-1);
+lb.querySelector('.next').onclick=()=>move(1);
+lb.addEventListener('click',e=>{if(e.target===lb)closeLB()});
+document.addEventListener('keydown',e=>{if(!lb.classList.contains('open'))return;
+  if(e.key==='Escape')closeLB();if(e.key==='ArrowRight')move(1);if(e.key==='ArrowLeft')move(-1);});
+
+// year
+document.getElementById('yr').textContent=new Date().getFullYear();
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const mount=document.getElementById('viewer3d');
+const spin=document.getElementById('v-spin');
+const poster=document.getElementById('v-poster');
+const GLB="https://res.cloudinary.com/dc99897dw/raw/upload/v1781436152/caworks/process-microsite/model/helical-model.glb";
+
+let renderer,scene,camera,controls,frameId;
+try{
+  renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.setSize(mount.clientWidth,mount.clientHeight);
+  renderer.outputColorSpace=THREE.SRGBColorSpace;
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure=1.05;
+  mount.appendChild(renderer.domElement);
+
+  scene=new THREE.Scene();
+  const pmrem=new THREE.PMREMGenerator(renderer);
+  scene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture;
+
+  camera=new THREE.PerspectiveCamera(42,mount.clientWidth/mount.clientHeight,0.1,200);
+  camera.position.set(9,9,12);
+
+  controls=new OrbitControls(camera,renderer.domElement);
+  controls.enableDamping=true; controls.dampingFactor=.07;
+  controls.minDistance=4; controls.maxDistance=40;
+
+  const key=new THREE.DirectionalLight(0xffffff,2.1); key.position.set(6,14,8); scene.add(key);
+  const fill=new THREE.DirectionalLight(0xbfd4ff,.7); fill.position.set(-8,4,-6); scene.add(fill);
+  const rim=new THREE.DirectionalLight(0xc9a96e,.9); rim.position.set(0,6,-12); scene.add(rim);
+  scene.add(new THREE.HemisphereLight(0xffffff,0x222222,.5));
+
+  const grid=new THREE.GridHelper(40,40,0x333333,0x1c1c1c);
+  grid.material.transparent=true; grid.material.opacity=.35; scene.add(grid);
+
+  new GLTFLoader().load(GLB,(g)=>{
+    const m=g.scene;
+    const box=new THREE.Box3().setFromObject(m);
+    const c=box.getCenter(new THREE.Vector3()), s=box.getSize(new THREE.Vector3());
+    m.position.sub(c); m.position.y += s.y/2;            // sit on grid
+    grid.position.y = 0;
+    m.traverse(o=>{ if(o.isMesh){ o.castShadow=false;
+      if(o.material){o.material.metalness=.55; o.material.roughness=.42; o.material.envMapIntensity=1.0;} }});
+    scene.add(m);
+    const maxd=Math.max(s.x,s.y,s.z);
+    camera.position.set(maxd*0.75,maxd*0.62,maxd*0.95);
+    controls.target.set(0,s.y/2,0);
+    controls.maxDistance=maxd*2.4; controls.update();
+    spin.style.display='none';
+  }, undefined, (err)=>{ console.error(err); spin.style.display='none'; poster.style.display='block'; });
+
+  function loop(){frameId=requestAnimationFrame(loop); controls.update(); renderer.render(scene,camera);}
+  loop();
+  addEventListener('resize',()=>{ if(!renderer)return;
+    camera.aspect=mount.clientWidth/mount.clientHeight; camera.updateProjectionMatrix();
+    renderer.setSize(mount.clientWidth,mount.clientHeight); });
+}catch(e){ console.error(e); spin.style.display='none'; poster.style.display='block'; }
+</script>
+</body></html>
