@@ -8,7 +8,7 @@
 <meta property="og:title" content="Helical Staircase Rescue — CAworks Engineering Case Study">
 <meta property="og:description" content="From a propped, vibrating structure to a code-compliant, beautifully finished staircase — the full CAworks process.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://res.cloudinary.com/dc99897dw/image/upload/w_1200,q_auto,f_auto/caworks/helical-pitch/workshop-sparks-hero">
+<meta property="og:image" content="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_1200,h_630,q_auto,f_auto/caworks/process-microsite/finished/finished-portfolio-01">
 <meta name="theme-color" content="#0A0A0A">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -172,10 +172,25 @@ figcaption{font-size:.8rem;color:var(--muted);margin-top:10px;letter-spacing:.02
 @keyframes spin{to{transform:rotate(360deg)}}
 .viewer .poster{position:absolute;inset:0;background-size:contain;background-repeat:no-repeat;
   background-position:center;background-color:#0c0c0c;display:none}
+.viewer .fallback{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;
+  justify-content:center;gap:16px;text-align:center;padding:30px;
+  background:radial-gradient(120% 120% at 50% 20%,#181818,#0c0c0c)}
+.viewer .fallback.show{display:flex}
+.viewer .fallback .fi{width:46px;height:46px;border:1px solid var(--gold-d);border-radius:50%;
+  display:grid;place-items:center;color:var(--gold-l);font-size:1.3rem}
+.viewer .fallback p{margin:0;color:var(--muted);font-size:.9rem;max-width:38ch}
+.viewer .fallback .frow{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:4px}
 
 /* video */
 .videowrap{border:1px solid var(--line);background:#000;overflow:hidden;aspect-ratio:16/9}
 .videowrap video{width:100%;height:100%;object-fit:cover;display:block}
+.videowrap.portrait{aspect-ratio:.69;max-height:80vh;margin:0 auto}
+.videowrap.portrait video{object-fit:cover}
+
+/* interactive scan embed */
+.scanwrap{position:relative;border:1px solid var(--line);background:#000;aspect-ratio:16/9;overflow:hidden}
+.scanwrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+@media(max-width:640px){.scanwrap{aspect-ratio:4/3}}
 
 /* note / callout */
 .note{border:1px dashed var(--gold-d);background:rgba(201,169,110,.05);padding:16px 20px;
@@ -252,6 +267,7 @@ footer a:hover{color:var(--gold-l)}
     <a href="#calcs">Calculations</a>
     <a href="#compliance">Compliance</a>
     <a href="#build">Fabrication</a>
+    <a href="#portfolio">Selected work</a>
   </nav>
   <span class="tag">Engineering Case Study</span>
 </div></header>
@@ -313,8 +329,8 @@ footer a:hover{color:var(--gold-l)}
  <div class="wrap">
   <div class="cols rev">
    <figure class="reveal">
-     <div class="videowrap "><video class="js-autoplay" muted loop playsinline preload="none" poster="https://res.cloudinary.com/dc99897dw/video/upload/w_1400,so_3/caworks-v2/staircase-installation.jpg" controls><source data-src="https://res.cloudinary.com/dc99897dw/video/upload/w_1280,q_auto/caworks-v2/staircase-installation.mp4" type="video/mp4"></video></div>
-     <figcaption>Walking the structure on site. <b style="color:var(--gold-l)">Note:</b> the original as-found walkthrough clip can be dropped straight into this slot.</figcaption>
+     <div class="videowrap portrait"><video class="js-autoplay" muted loop playsinline preload="none" poster="https://res.cloudinary.com/dc99897dw/video/upload/w_1080,so_2/caworks/process-microsite/media/inspection-walkthrough.jpg" controls><source data-src="https://res.cloudinary.com/dc99897dw/video/upload/w_1080,q_auto/caworks/process-microsite/media/inspection-walkthrough.mp4" type="video/mp4"></video></div>
+     <figcaption>The as-found inspection walkthrough — recording the structure's geometry and behaviour on site before any work begins.</figcaption>
    </figure>
    <div class="reveal">
      <span class="stepno">Step 01 — Site inspection</span>
@@ -407,10 +423,9 @@ footer a:hover{color:var(--gold-l)}
        <div><div class="n">1:1</div><div class="l">as-built &rarr; model</div></div>
      </div>
      <figure style="margin-top:18px">
-       <img class="frame" src="https://res.cloudinary.com/dc99897dw/image/upload/w_1200,q_auto,f_auto/caworks/helical-pitch/install-timber-treads" alt="Helical steel structure captured from above">
-       <figcaption>The real, as-built helix — the geometry the survey captures point-by-point.</figcaption>
+       <div class="videowrap" style="aspect-ratio:1.12"><video class="js-autoplay" muted loop playsinline preload="none" poster="https://res.cloudinary.com/dc99897dw/video/upload/w_1100,so_2/caworks/process-microsite/media/pointcloud-anon.jpg" controls><source data-src="https://res.cloudinary.com/dc99897dw/video/upload/w_1100,q_auto/caworks/process-microsite/media/pointcloud-anon.mp4" type="video/mp4"></video></div>
+       <figcaption>Navigating the registered point cloud — millions of measured points captured on site.</figcaption>
      </figure>
-     <p class="note" style="margin-top:14px"><b>Add the scan:</b> a hosted point-cloud / Matterport walkthrough link can be embedded here on request.</p>
    </div>
   </div>
  </div>
@@ -425,7 +440,14 @@ footer a:hover{color:var(--gold-l)}
   <div class="viewer reveal" style="margin-top:30px">
     <div id="viewer3d"></div>
     <div class="spin" id="v-spin"><div class="ring"></div>Loading 3D model…</div>
-    <div class="poster" id="v-poster" style="background-image:url('https://res.cloudinary.com/dc99897dw/image/upload/w_1500,q_auto,f_auto/v1781435926/caworks/process-microsite/drawings/drawings_p02.png')"></div>
+    <div class="fallback" id="v-fallback">
+      <div class="fi">⟳</div>
+      <p>The interactive 3D model didn't load — this can happen on a slow or restricted connection.</p>
+      <div class="frow">
+        <button class="btn" id="v-retry" type="button">Retry 3D model</button>
+        <a class="btn ghost" href="https://res.cloudinary.com/dc99897dw/raw/upload/v1781435995/caworks/process-microsite/docs/drawings-report.pdf" target="_blank" rel="noopener">View drawings instead</a>
+      </div>
+    </div>
     <div class="hint">Drag to rotate · scroll to zoom · right-drag to pan</div>
   </div>
  </div>
@@ -578,11 +600,10 @@ footer a:hover{color:var(--gold-l)}
      <h3>Solid oak, shaped to the helix</h3>
      <hr class="divider">
      <p>Each step is clad in solid French oak, top- and bottom-shaped to follow the curve of the helix, finished at ~30&nbsp;mm and stained or varnished to the client's selection. Treads are machined to the surveyed geometry so they seat precisely on the steel below, with consistent nosings around the full sweep of the stair.</p>
-     <p class="note"><b>Tread clip:</b> the close-up tread-machining video can be embedded directly in this section.</p>
    </div>
    <figure class="reveal">
-     <img class="frame" src="https://res.cloudinary.com/dc99897dw/image/upload/w_1200,q_auto,f_auto/caworks/helical-pitch/install-timber-treads" alt="Timber treads on a helical staircase">
-     <figcaption>Shaped solid-timber treads fitted around the helix.</figcaption>
+     <div class="videowrap"><video class="js-autoplay" muted loop playsinline preload="none" poster="https://res.cloudinary.com/dc99897dw/video/upload/w_1400,so_2/caworks/process-microsite/media/tread-production.jpg" controls><source data-src="https://res.cloudinary.com/dc99897dw/video/upload/w_1280,q_auto/caworks/process-microsite/media/tread-production.mp4" type="video/mp4"></video></div>
+     <figcaption>Machining and shaping the solid oak treads to the surveyed helix geometry.</figcaption>
    </figure>
   </div>
  </div>
@@ -593,6 +614,12 @@ footer a:hover{color:var(--gold-l)}
   <span class="stepno reveal">Step 14 — Glass fabrication</span>
   <h2 class="reveal">How the curved balustrade is made</h2>
   <hr class="divider reveal">
+  <div class="grid g-3 reveal" style="margin-top:30px">
+    <button class="thumb" data-lb data-group="glass" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1600,q_auto,f_auto/caworks/process-microsite/glass/glass-curving" style="aspect-ratio:4/3" aria-label="Open Curving — flat glass slumped over a mould in the bending furnace"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_520,q_auto,f_auto/caworks/process-microsite/glass/glass-curving" loading="lazy" alt="Glass heated and slumped over a curved mould in a bending furnace"><span class="thumb-cap">Curving — slumped over a mould in the bending furnace</span></button>
+    <button class="thumb" data-lb data-group="glass" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1600,q_auto,f_auto/caworks/process-microsite/glass/glass-toughening" style="aspect-ratio:4/3" aria-label="Open Toughening — rapid air-quench locks the surface into compression"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_520,q_auto,f_auto/caworks/process-microsite/glass/glass-toughening" loading="lazy" alt="Curved glass pane rapidly air-quenched in a tempering line"><span class="thumb-cap">Toughening — rapid air-quench locks in surface compression</span></button>
+    <button class="thumb" data-lb data-group="glass" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1600,q_auto,f_auto/caworks/process-microsite/glass/glass-laminating" style="aspect-ratio:4/3" aria-label="Open Laminating — two curved panes bonded with a structural interlayer"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_520,q_auto,f_auto/caworks/process-microsite/glass/glass-laminating" loading="lazy" alt="Two curved toughened glass panes bonded with a structural interlayer"><span class="thumb-cap">Laminating — two curved panes bonded with a structural interlayer</span></button>
+  </div>
+  <p class="kicker reveal" style="font-size:.78rem;margin-top:10px">Illustrative of the curved-glass toughening and lamination process.</p>
   <div class="know reveal" style="margin-top:30px">
     <div>
       <p>The balustrade is <strong>17.5&nbsp;mm curved laminated toughened glass</strong> — among the most demanding products in architectural glass. It is made in four stages:</p>
@@ -625,6 +652,25 @@ footer a:hover{color:var(--gold-l)}
      <p>The curved glass is set into bespoke slotted brackets along the inner line, with <strong>continuous handrails to both sides</strong> — satisfying the compliance mitigation as well as the architecture. The stringers are clad to conceal every connection, and the steel is primed and painted to a selected RAL.</p>
      <p>What began as an unfinished structure standing on scaffolding leaves site as a <strong>structurally verified, code-assessed and beautifully finished staircase</strong> — delivered by one accountable team.</p>
    </div>
+  </div>
+ </div>
+</section>
+
+<section id="portfolio">
+ <div class="wrap">
+  <span class="stepno reveal">Selected work</span>
+  <h2 class="reveal">Helical &amp; curved staircases by CAworks</h2>
+  <hr class="divider reveal">
+  <p class="lead reveal" style="max-width:66ch">A representative selection of CAworks helical and curved staircase work — from bare structural steel in the workshop to finished oak and curved-glass installations. These are separate projects shown to illustrate capability, not all the staircase in this case study.</p>
+  <div class="grid g-4 reveal" style="margin-top:36px">
+    <button class="thumb" data-lb data-group="portfolio" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/caworks/process-microsite/finished/finished-portfolio-01" style="aspect-ratio:3/4" aria-label="Open Curved frameless glass balustrade with timber handrail"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_900,q_auto,f_auto/caworks/process-microsite/finished/finished-portfolio-01" loading="lazy" alt="Curved frameless glass balustrade with timber handrail"><span class="thumb-cap">Curved frameless glass balustrade with timber handrail</span></button>
+    <button class="thumb" data-lb data-group="portfolio" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/caworks/process-microsite/finished/finished-portfolio-02" style="aspect-ratio:3/4" aria-label="Open Bronze-tinted curved glass balustrade, LED-lit"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_900,q_auto,f_auto/caworks/process-microsite/finished/finished-portfolio-02" loading="lazy" alt="Bronze-tinted curved glass balustrade with LED lighting"><span class="thumb-cap">Bronze-tinted curved glass balustrade, LED-lit</span></button>
+    <button class="thumb" data-lb data-group="portfolio" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/caworks/process-microsite/finished/finished-portfolio-03" style="aspect-ratio:3/4" aria-label="Open Oak-clad helical flight viewed from above"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_900,q_auto,f_auto/caworks/process-microsite/finished/finished-portfolio-03" loading="lazy" alt="Oak-clad helical staircase viewed from above"><span class="thumb-cap">Oak-clad helical flight, from above</span></button>
+    <button class="thumb" data-lb data-group="portfolio" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/caworks/process-microsite/finished/finished-portfolio-04" style="aspect-ratio:3/4" aria-label="Open Bare steel helical structure during fabrication"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_900,q_auto,f_auto/caworks/process-microsite/finished/finished-portfolio-04" loading="lazy" alt="Bare steel helical staircase structure during fabrication"><span class="thumb-cap">Bare steel helical structure during fabrication</span></button>
+    <button class="thumb" data-lb data-group="portfolio" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/caworks/process-microsite/finished/finished-portfolio-05" style="aspect-ratio:3/4" aria-label="Open Helical steel stringer and balustrade posts"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_900,q_auto,f_auto/caworks/process-microsite/finished/finished-portfolio-05" loading="lazy" alt="Helical steel stringer with balustrade posts"><span class="thumb-cap">Helical steel stringer and balustrade posts</span></button>
+    <button class="thumb" data-lb data-group="portfolio" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/caworks/process-microsite/finished/finished-portfolio-06" style="aspect-ratio:3/4" aria-label="Open Curved stringer fabricated in the workshop"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_900,q_auto,f_auto/caworks/process-microsite/finished/finished-portfolio-06" loading="lazy" alt="Curved steel stringer being fabricated in the workshop"><span class="thumb-cap">Curved stringer fabricated in the workshop</span></button>
+    <button class="thumb" data-lb data-group="portfolio" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/caworks/process-microsite/finished/finished-portfolio-07" style="aspect-ratio:3/4" aria-label="Open Primed curved steel staircase before cladding"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_900,q_auto,f_auto/caworks/process-microsite/finished/finished-portfolio-07" loading="lazy" alt="Primed curved steel staircase before cladding"><span class="thumb-cap">Primed curved steel before cladding</span></button>
+    <button class="thumb" data-lb data-group="portfolio" data-full="https://res.cloudinary.com/dc99897dw/image/upload/w_1700,q_auto,f_auto/caworks/process-microsite/finished/finished-portfolio-08" style="aspect-ratio:3/4" aria-label="Open Finished curved staircase with bronze glass balustrade"><img src="https://res.cloudinary.com/dc99897dw/image/upload/c_fill,g_auto,w_700,h_900,q_auto,f_auto/caworks/process-microsite/finished/finished-portfolio-08" loading="lazy" alt="Finished curved staircase with bronze glass balustrade"><span class="thumb-cap">Finished curved staircase, bronze glass balustrade</span></button>
   </div>
  </div>
 </section>
@@ -727,10 +773,49 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const mount=document.getElementById('viewer3d');
 const spin=document.getElementById('v-spin');
-const poster=document.getElementById('v-poster');
+const fallback=document.getElementById('v-fallback');
+const retryBtn=document.getElementById('v-retry');
 const GLB="https://res.cloudinary.com/dc99897dw/raw/upload/v1781436152/caworks/process-microsite/model/helical-model.glb";
 
-let renderer,scene,camera,controls,frameId;
+let renderer,scene,camera,controls,grid,frameId,loadedModel=null,settled=false,watchdog=null;
+
+function showFallback(){
+  settled=true; if(watchdog){clearTimeout(watchdog);watchdog=null;}
+  spin.style.display='none'; fallback.classList.add('show');
+}
+function hideOverlays(){
+  settled=true; if(watchdog){clearTimeout(watchdog);watchdog=null;}
+  spin.style.display='none'; fallback.classList.remove('show');
+}
+
+// (Re)load the GLB with up to 3 attempts and a cache-bust so a transient
+// CDN/network hiccup — the usual cause of the blank viewer — self-recovers.
+function loadModel(attempt){
+  attempt=attempt||1;
+  if(loadedModel){ scene.remove(loadedModel); loadedModel=null; }
+  spin.style.display='flex'; fallback.classList.remove('show'); settled=false;
+  const url = GLB + (attempt>1 ? ('?cb='+Date.now()) : '');
+  new GLTFLoader().load(url,(g)=>{
+    const m=g.scene;
+    const box=new THREE.Box3().setFromObject(m);
+    const c=box.getCenter(new THREE.Vector3()), s=box.getSize(new THREE.Vector3());
+    m.position.sub(c); m.position.y += s.y/2;            // sit on grid
+    grid.position.y = 0;
+    m.traverse(o=>{ if(o.isMesh){ o.castShadow=false;
+      if(o.material){o.material.metalness=.55; o.material.roughness=.42; o.material.envMapIntensity=1.0;} }});
+    scene.add(m); loadedModel=m;
+    const maxd=Math.max(s.x,s.y,s.z);
+    camera.position.set(maxd*0.75,maxd*0.62,maxd*0.95);
+    controls.target.set(0,s.y/2,0);
+    controls.maxDistance=maxd*2.4; controls.update();
+    hideOverlays();
+  }, undefined, (err)=>{
+    console.error('GLB load failed (attempt '+attempt+')',err);
+    if(attempt<3){ setTimeout(()=>loadModel(attempt+1), 1200*attempt); }
+    else { showFallback(); }
+  });
+}
+
 try{
   renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
   renderer.setPixelRatio(Math.min(devicePixelRatio,2));
@@ -740,7 +825,12 @@ try{
   renderer.toneMappingExposure=1.05;
   mount.appendChild(renderer.domElement);
 
+  // never flash white if the context is lost — keep it dark and offer a retry
+  renderer.domElement.addEventListener('webglcontextlost',(e)=>{ e.preventDefault(); showFallback(); });
+  renderer.domElement.addEventListener('webglcontextrestored',()=>{ if(scene) loadModel(1); });
+
   scene=new THREE.Scene();
+  scene.background=new THREE.Color(0x0c0c0c);
   const pmrem=new THREE.PMREMGenerator(renderer);
   scene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture;
 
@@ -756,30 +846,20 @@ try{
   const rim=new THREE.DirectionalLight(0xc9a96e,.9); rim.position.set(0,6,-12); scene.add(rim);
   scene.add(new THREE.HemisphereLight(0xffffff,0x222222,.5));
 
-  const grid=new THREE.GridHelper(40,40,0x333333,0x1c1c1c);
+  grid=new THREE.GridHelper(40,40,0x333333,0x1c1c1c);
   grid.material.transparent=true; grid.material.opacity=.35; scene.add(grid);
-
-  new GLTFLoader().load(GLB,(g)=>{
-    const m=g.scene;
-    const box=new THREE.Box3().setFromObject(m);
-    const c=box.getCenter(new THREE.Vector3()), s=box.getSize(new THREE.Vector3());
-    m.position.sub(c); m.position.y += s.y/2;            // sit on grid
-    grid.position.y = 0;
-    m.traverse(o=>{ if(o.isMesh){ o.castShadow=false;
-      if(o.material){o.material.metalness=.55; o.material.roughness=.42; o.material.envMapIntensity=1.0;} }});
-    scene.add(m);
-    const maxd=Math.max(s.x,s.y,s.z);
-    camera.position.set(maxd*0.75,maxd*0.62,maxd*0.95);
-    controls.target.set(0,s.y/2,0);
-    controls.maxDistance=maxd*2.4; controls.update();
-    spin.style.display='none';
-  }, undefined, (err)=>{ console.error(err); spin.style.display='none'; poster.style.display='block'; });
 
   function loop(){frameId=requestAnimationFrame(loop); controls.update(); renderer.render(scene,camera);}
   loop();
   addEventListener('resize',()=>{ if(!renderer)return;
     camera.aspect=mount.clientWidth/mount.clientHeight; camera.updateProjectionMatrix();
     renderer.setSize(mount.clientWidth,mount.clientHeight); });
-}catch(e){ console.error(e); spin.style.display='none'; poster.style.display='block'; }
+
+  retryBtn.addEventListener('click',()=>loadModel(1));
+  // watchdog: if nothing has settled after 18s (e.g. a stalled fetch), offer the retry
+  watchdog=setTimeout(()=>{ if(!settled && !loadedModel) showFallback(); }, 18000);
+
+  loadModel(1);
+}catch(e){ console.error(e); showFallback(); }
 </script>
 </body></html>
